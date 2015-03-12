@@ -79,6 +79,9 @@ public class GcmIntentService extends IntentService {
                 sendNotification("Received: " + extras.toString());
                 Log.i(TAG, "Received: " + extras.toString());
             }
+        } else {
+            sendNotification("Received empty: " + extras.toString());
+            Log.i(TAG, "Received empty: " + extras.toString());
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
         GcmBroadcastReceiver.completeWakefulIntent(intent);

@@ -47,7 +47,7 @@ public class DemoActivity extends Activity {
      * Substitute you own sender ID here. This is the project number you got
      * from the API Console, as described in "Getting Started."
      */
-    String SENDER_ID = "Your-Sender-ID";
+    final String SENDER_ID = "745459358115";
 
     /**
      * Tag used on log messages.
@@ -165,6 +165,7 @@ public class DemoActivity extends Activity {
             @Override
             protected String doInBackground(Void... params) {
                 String msg = "";
+                Log.d(TAG, "registerInBackground");
                 try {
                     if (gcm == null) {
                         gcm = GoogleCloudMessaging.getInstance(context);
@@ -183,6 +184,7 @@ public class DemoActivity extends Activity {
                     // Persist the regID - no need to register again.
                     storeRegistrationId(context, regid);
                 } catch (IOException ex) {
+                    Log.e(TAG, ex.getMessage(), ex);
                     msg = "Error :" + ex.getMessage();
                     // If there is an error, don't just keep trying to register.
                     // Require the user to click a button again, or perform
