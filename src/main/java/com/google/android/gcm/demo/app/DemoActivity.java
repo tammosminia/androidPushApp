@@ -52,7 +52,7 @@ public class DemoActivity extends Activity {
     /**
      * Tag used on log messages.
      */
-    static final String TAG = "GCM Demo";
+    static final String TAG = "PushPoc";
 
     TextView mDisplay;
     GoogleCloudMessaging gcm;
@@ -81,6 +81,7 @@ public class DemoActivity extends Activity {
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
+//        bindService()
     }
 
     @Override
@@ -142,6 +143,9 @@ public class DemoActivity extends Activity {
             Log.i(TAG, "Registration not found.");
             return "";
         }
+        Log.i(TAG, "Registration id: " + registrationId);
+        show("Registration id: " + registrationId);
+
         // Check if app was updated; if so, it must clear the registration ID
         // since the existing regID is not guaranteed to work with the new
         // app version.
@@ -195,7 +199,7 @@ public class DemoActivity extends Activity {
 
             @Override
             protected void onPostExecute(String msg) {
-                mDisplay.append(msg + "\n");
+                show(msg);
             }
         }.execute(null, null, null);
     }
@@ -223,17 +227,12 @@ public class DemoActivity extends Activity {
 
                 @Override
                 protected void onPostExecute(String msg) {
-                    mDisplay.append(msg + "\n");
+                    show(msg);
                 }
             }.execute(null, null, null);
         } else if (view == findViewById(R.id.clear)) {
             mDisplay.setText("");
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     /**
@@ -266,5 +265,9 @@ public class DemoActivity extends Activity {
      */
     private void sendRegistrationIdToBackend() {
       // Your implementation here.
+    }
+
+    public void show(String s) {
+        mDisplay.append(s + "\n");
     }
 }
