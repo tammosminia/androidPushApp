@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -94,6 +95,7 @@ public class GcmIntentService extends IntentService {
         .setContentTitle("GCM Notification")
         .setStyle(new NotificationCompat.BigTextStyle()
         .bigText(msg))
+        .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
         .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
