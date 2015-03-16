@@ -20,7 +20,9 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -31,6 +33,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -64,6 +67,7 @@ public class DemoActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "oncreate");
 
         setContentView(R.layout.main);
         mDisplay = (TextView) findViewById(R.id.display);
@@ -268,6 +272,16 @@ public class DemoActivity extends Activity {
     }
 
     public void show(String s) {
-        mDisplay.append(s + "\n");
+        mDisplay.append(new Date().toString() + " " + s + "\n");
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.i(TAG, "onNewIntent");
+        String s = intent.getStringExtra("message");
+        if(s != null) {
+            show(" new message: " + s);
+        }
+    }
+
 }
