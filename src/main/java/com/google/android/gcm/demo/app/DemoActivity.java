@@ -58,11 +58,13 @@ public class DemoActivity extends Activity {
     static final String TAG = "PushPoc";
 
     TextView mDisplay;
+    TextView tellerView;
     GoogleCloudMessaging gcm;
     AtomicInteger msgId = new AtomicInteger();
     Context context;
 
     String regid;
+    Integer messageCount = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class DemoActivity extends Activity {
 
         setContentView(R.layout.main);
         mDisplay = (TextView) findViewById(R.id.display);
+        tellerView = (TextView) findViewById(R.id.teller);
 
         context = getApplicationContext();
 
@@ -211,31 +214,10 @@ public class DemoActivity extends Activity {
     // Send an upstream message.
     public void onClick(final View view) {
 
-        if (view == findViewById(R.id.send)) {
-            new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... params) {
-                    String msg = "";
-                    try {
-                        Bundle data = new Bundle();
-                        data.putString("my_message", "Hello World");
-                        data.putString("my_action", "com.google.android.gcm.demo.app.ECHO_NOW");
-                        String id = Integer.toString(msgId.incrementAndGet());
-                        gcm.send(SENDER_ID + "@gcm.googleapis.com", id, data);
-                        msg = "Sent message";
-                    } catch (IOException ex) {
-                        msg = "Error :" + ex.getMessage();
-                    }
-                    return msg;
-                }
-
-                @Override
-                protected void onPostExecute(String msg) {
-                    show(msg);
-                }
-            }.execute(null, null, null);
-        } else if (view == findViewById(R.id.clear)) {
+        if (view == findViewById(R.id.clear)) {
             mDisplay.setText("");
+            messageCount = 0;
+            tellerView.setText("0");
         }
     }
 
@@ -275,12 +257,20 @@ public class DemoActivity extends Activity {
         mDisplay.append(new Date().toString() + " " + s + "\n");
     }
 
+    public void addMessage(String s) {
+        show(" new message: " + s);
+        messageCount++;
+        tellerView.setText(messageCount.toString());
+    }
+
+
+
     @Override
     protected void onNewIntent(Intent intent) {
         Log.i(TAG, "onNewIntent");
         String s = intent.getStringExtra("message");
         if(s != null) {
-            show(" new message: " + s);
+            addMessage(s);
         }
     }
 
