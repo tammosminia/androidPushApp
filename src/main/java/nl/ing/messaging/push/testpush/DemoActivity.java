@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.gcm.demo.app;
+package nl.ing.messaging.push.testpush;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -71,9 +70,9 @@ public class DemoActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "oncreate");
 
-        setContentView(R.layout.main);
-        mDisplay = (TextView) findViewById(R.id.display);
-        tellerView = (TextView) findViewById(R.id.teller);
+        setContentView(nl.ing.messaging.push.testpush.R.layout.main);
+        mDisplay = (TextView) findViewById(nl.ing.messaging.push.testpush.R.id.display);
+        tellerView = (TextView) findViewById(nl.ing.messaging.push.testpush.R.id.teller);
 
         context = getApplicationContext();
 
@@ -214,7 +213,7 @@ public class DemoActivity extends Activity {
     // Send an upstream message.
     public void onClick(final View view) {
 
-        if (view == findViewById(R.id.clear)) {
+        if (view == findViewById(nl.ing.messaging.push.testpush.R.id.clear)) {
             mDisplay.setText("");
             messageCount = 0;
             tellerView.setText("0");

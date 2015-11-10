@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <string name="app_name">PushPoc</string>
+    <string name="app_name">TestPush</string>
     <string name="send">Send</string>
     <string name="clear">Clear</string>
 
