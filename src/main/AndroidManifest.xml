@@ -75,7 +75,8 @@
           so only GCM services can send data messages for the app.
         -->
         <receiver
-            android:name=".GcmBroadcastReceiver"
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <!-- Receives the actual messages. -->
@@ -84,7 +85,15 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".GcmIntentService" />
+        <!-- [START gcm_listener] -->
+        <service
+            android:name=".GcmIntentService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
     </application>
 
 </manifest>

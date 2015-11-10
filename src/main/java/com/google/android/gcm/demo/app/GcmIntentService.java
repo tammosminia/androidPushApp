@@ -16,6 +16,7 @@
 
 package com.google.android.gcm.demo.app;
 
+import com.google.android.gms.gcm.GcmListenerService;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.app.IntentService;
@@ -29,24 +30,13 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-/**
- * This {@code IntentService} does the actual handling of the GCM message.
- * {@code GcmBroadcastReceiver} (a {@code WakefulBroadcastReceiver}) holds a
- * partial wake lock for this service while the service does its work. When the
- * service is finished, it calls {@code completeWakefulIntent()} to release the
- * wake lock.
- */
-public class GcmIntentService extends IntentService {
+public class GcmIntentService extends GcmListenerService {
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
     NotificationCompat.Builder builder;
 
-    public GcmIntentService() {
-        super("GcmIntentService");
-    }
     public static final String TAG = "GCM Demo";
 
-    @Override
     protected void onHandleIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
@@ -76,7 +66,17 @@ public class GcmIntentService extends IntentService {
             Log.i(TAG, "Received empty: " + extras.toString());
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
-        GcmBroadcastReceiver.completeWakefulIntent(intent);
+//        GcmBroadcastReceiver.completeWakefulIntent(intent);
+    }
+
+    @Override
+    public void onMessageReceived(String from, Bundle data) {
+        String message = data.getString("message");
+        Log.d(TAG, "From: " + from);
+        Log.d(TAG, "Message: " + message);
+
+        sendNotification(message);
+        toActivity(message);
     }
 
     // Put the message into a notification and post it.
@@ -100,5 +100,13 @@ public class GcmIntentService extends IntentService {
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+    }
+
+    private void toActivity(String msg) {
+        Context context = getBaseContext();
+        Intent intent = new Intent(context, DemoActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("message", msg);
+        context.startActivity(intent);
     }
 }
