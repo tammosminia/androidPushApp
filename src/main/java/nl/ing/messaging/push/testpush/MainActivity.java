@@ -36,12 +36,11 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Main UI for the demo app.
  */
-public class DemoActivity extends Activity {
+public class MainActivity extends Activity {
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -55,12 +54,11 @@ public class DemoActivity extends Activity {
     /**
      * Tag used on log messages.
      */
-    static final String TAG = "PushPoc";
+    static final String TAG = "Push";
 
     TextView mDisplay;
     TextView tellerView;
     GoogleCloudMessaging gcm;
-    AtomicInteger msgId = new AtomicInteger();
     Context context;
 
     String regid;
@@ -263,7 +261,7 @@ public class DemoActivity extends Activity {
     private SharedPreferences getGcmPreferences(Context context) {
         // This sample app persists the registration ID in shared preferences, but
         // how you store the regID in your app is up to you.
-        return getSharedPreferences(DemoActivity.class.getSimpleName(),
+        return getSharedPreferences(MainActivity.class.getSimpleName(),
                 Context.MODE_PRIVATE);
     }
     /**
