@@ -20,13 +20,16 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -39,8 +42,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Main UI for the demo app.
  */
 public class DemoActivity extends Activity {
-
-    public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -65,6 +66,8 @@ public class DemoActivity extends Activity {
     String regid;
     Integer messageCount = 0;
 
+    BroadcastReceiver receiver;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +90,14 @@ public class DemoActivity extends Activity {
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
-//        bindService()
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String s = intent.getStringExtra("message");
+                addMessage(s);
+            }
+        };
     }
 
     @Override
@@ -115,6 +125,19 @@ public class DemoActivity extends Activity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((receiver), new IntentFilter(GcmIntentService.INCOMING_MESSAGE)
+        );
+    }
+
+    @Override
+    protected void onStop() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        super.onStop();
     }
 
     /**
@@ -257,20 +280,9 @@ public class DemoActivity extends Activity {
     }
 
     public void addMessage(String s) {
-        show(" new message: " + s);
+        show("new message: " + s);
         messageCount++;
         tellerView.setText(messageCount.toString());
-    }
-
-
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Log.i(TAG, "onNewIntent");
-        String s = intent.getStringExtra("message");
-        if(s != null) {
-            addMessage(s);
-        }
     }
 
 }

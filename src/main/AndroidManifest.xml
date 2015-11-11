@@ -61,19 +61,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="nl.ing.messaging.push.testpush" />
+                <action android:name="aktie" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:name="nl.ing.messaging.push.testpush.GcmReceiver"
             android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="nl.ing.messaging.push.testpush" />
             </intent-filter>
         </receiver>
 
