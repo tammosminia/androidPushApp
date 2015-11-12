@@ -11,6 +11,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import java.util.Map;
+
 public class GcmIntentService extends GcmListenerService {
     public static final int NOTIFICATION_ID = 1;
 
@@ -23,8 +25,9 @@ public class GcmIntentService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
-        String action = data.getString("action");
-        String name = data.getString("name");
+        Bundle target = data.getBundle("target");
+        String action = target.getString("action");
+        String name = target.getString("id");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
         Log.d(TAG, "Action: " + action);
