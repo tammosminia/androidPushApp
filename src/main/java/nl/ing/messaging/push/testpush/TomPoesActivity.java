@@ -31,6 +31,7 @@ public class TomPoesActivity extends Activity {
             case "bommel": setStory("Als je begrijpt wat ik bedoel"); break;
             case "wammes": setStory("Slapen is veel leukerder, want dan verveel je je niet."); break;
             case "bullebas": setStory("Ik ga je opschrijven Bommel, wat is je naam?"); break;
+            default: setStory("Onbekend persoon: " + name);
         }
     }
 

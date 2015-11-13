@@ -25,9 +25,8 @@ public class GcmIntentService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
-        Bundle target = data.getBundle("target");
-        String action = target.getString("action");
-        String name = target.getString("id");
+        String action = data.getString("targetAction");
+        String name = data.getString("targetId");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
         Log.d(TAG, "Action: " + action);
